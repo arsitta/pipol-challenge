@@ -3,31 +3,47 @@ import { useEffect, useRef, useState } from 'react';
 import { BLOCK_DATE_DATA_TYPE } from '../../../graphQL/querys/blocks/ALL_REWARDS_BETWEEN_DATES';
 
 interface Props {
-    elements: BLOCK_DATE_DATA_TYPE[]
+    elements: BLOCK_DATE_DATA_TYPE[];
 }
 
 export const RewardsBlocksMetrics = ({ elements }: Props) => {
     const svgRef = useRef<SVGSVGElement | null>(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
     const [tooltip, setTooltip] = useState<{ x: number; y: number; content: string } | null>(null);
+    const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+    useEffect(() => {
+        const handleResize = () => {
+            if (containerRef.current) {
+                const { clientWidth, clientHeight } = containerRef.current;
+                setDimensions({ width: clientWidth, height: clientHeight });
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Para inicializar las dimensiones
+
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     useEffect(() => {
         if (!elements || !svgRef.current) return;
 
-        // Convertimos los datos a un formato manejable
         const parsedData = elements.map(d => ({
             date: new Date(d.date.date),
             blocks: +d.Blocks,
             reward: +d.reward,
         }));
 
-        // Dimensiones del gráfico
-        const width = 800;
-        const height = 400;
+        const { width, height } = dimensions;
         const margin = { top: 20, right: 50, bottom: 50, left: 50 };
 
         const svg = d3.select(svgRef.current)
             .attr('width', width)
             .attr('height', height);
+
+        // Limpiar el SVG antes de redibujar
+        svg.selectAll('*').remove();
 
         // Escalas
         const xScale = d3.scaleTime()
@@ -53,7 +69,6 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
         const yAxis = d3.axisLeft(yScale);
 
         // Renderizamos los ejes
-        svg.selectAll('.x-axis').remove();
         svg.append('g')
             .attr('class', 'x-axis')
             .attr('transform', `translate(0,${height - margin.bottom})`)
@@ -62,7 +77,6 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
             .attr('transform', 'rotate(-45)')
             .style('text-anchor', 'end');
 
-        svg.selectAll('.y-axis').remove();
         svg.append('g')
             .attr('class', 'y-axis')
             .attr('transform', `translate(${margin.left},0)`)
@@ -83,7 +97,7 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
             .attr('stroke-width', 2)
             .attr('d', lineGenerator)
             .on('pointerenter', () => {
-                svg.selectAll('.line-rewards').attr('stroke', 'lightgray'); // Cambiar la línea de rewards a gris
+                svg.selectAll('.line-rewards').attr('stroke', 'lightgray');
                 setTooltip({ x: 0, y: 0, content: 'Blocks' });
             })
             .on('pointermove', (event) => {
@@ -91,7 +105,7 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
                 setTooltip({ x, y, content: 'Blocks' });
             })
             .on('pointerleave', () => {
-                svg.selectAll('.line-rewards').attr('stroke', 'gold'); // Restaurar color original
+                svg.selectAll('.line-rewards').attr('stroke', 'gold');
                 setTooltip(null);
             });
 
@@ -104,7 +118,7 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
             .attr('stroke-width', 2)
             .attr('d', lineGenerator)
             .on('pointerenter', () => {
-                svg.selectAll('.line-blocks').attr('stroke', 'lightgray'); // Cambiar la línea de blocks a gris
+                svg.selectAll('.line-blocks').attr('stroke', 'lightgray');
                 setTooltip({ x: 0, y: 0, content: 'Rewards' });
             })
             .on('pointermove', (event) => {
@@ -112,14 +126,14 @@ export const RewardsBlocksMetrics = ({ elements }: Props) => {
                 setTooltip({ x, y, content: 'Rewards' });
             })
             .on('pointerleave', () => {
-                svg.selectAll('.line-blocks').attr('stroke', 'steelblue'); // Restaurar color original
+                svg.selectAll('.line-blocks').attr('stroke', 'steelblue');
                 setTooltip(null);
             });
 
-    }, [elements]);
+    }, [elements, dimensions]); // Asegúrate de incluir 'dimensions' en las dependencias
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div ref={containerRef} style={{ width: '100%', height: '100%', position: 'relative' }}>
             <svg ref={svgRef} />
             {tooltip && (
                 <div

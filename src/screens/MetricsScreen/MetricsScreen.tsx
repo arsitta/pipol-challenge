@@ -1,5 +1,5 @@
 import { useLazyQuery } from '@apollo/client'
-import { Container } from '@mui/material'
+import { Box, Container } from '@mui/material'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { RewardsBlocksMetrics } from '../../components/charts/RewardsBlocksMetrics/RewardsBlocksMetrics'
@@ -9,6 +9,7 @@ import { addSearch } from '../../store/slices/searchHistorySlice/searchHistorySl
 import { GeneralDataCard } from './components/GeneralDataCard/GeneralDataCard'
 import { MetricsFilters, MetricsFiltersValues } from './components/MetricsFilters/MetricsFilters'
 import { MetricsTable } from './components/MetricsTable/MetricsTable'
+import "./metricsScreen.scss"
 
 export const MetricsScreen = () => {
     const limit = Number(import.meta.env.VITE_APP_RESULTS_PER_PAGE)
@@ -26,11 +27,12 @@ export const MetricsScreen = () => {
 
         const { data, observable } = await getRewardsMetrics({ variables })
 
-        dispatch(addSearch({
-            variables,
-            data,
-            queryName: observable.queryName,
-        }))
+        if (data) {
+            dispatch(addSearch({
+                variables,
+                data,
+            }))
+        }
         setCurrentPage(page)
     }
 
@@ -46,22 +48,29 @@ export const MetricsScreen = () => {
             />
             <MetricsFilters handleSearch={(vales: MetricsFiltersValues) => handleSearch(vales, 1)} loading={loading} />
             {
-                data && <>
-
-                    <RewardsBlocksMetrics elements={data.ethereum.arrDates} />
-
-                    <GeneralDataCard
-                        totalBlocksCount={data.ethereum.general[0].totalBlocksCount}
-                        totalReward={data.ethereum.general[0].totalReward}
-                    />
-                    <MetricsTable
-                        elements={data?.ethereum.arrDates}
-                        totalCount={data.ethereum.general[0].totalResults}
-                        changePage={handleChangePage}
-                        page={currentPage}
-                        loading={loading}
-                    />
-                </>
+                data &&
+                <div className="metrics-data-container">
+                    <Box className="main-metrics">
+                        <Box className="metrics-chart" sx={{ mb: "2rem" }}>
+                            <RewardsBlocksMetrics elements={data.ethereum.arrDates} />
+                        </Box>
+                        <Box className="metrics-table">
+                            <MetricsTable
+                                elements={data?.ethereum.arrDates}
+                                totalCount={data.ethereum.general[0].totalResults}
+                                changePage={handleChangePage}
+                                page={currentPage}
+                                loading={loading}
+                            />
+                        </Box>
+                    </Box>
+                    <Box>
+                        <GeneralDataCard
+                            totalBlocksCount={data.ethereum.general[0].totalBlocksCount}
+                            totalReward={data.ethereum.general[0].totalReward}
+                        />
+                    </Box>
+                </div>
             }
         </Container >
     )

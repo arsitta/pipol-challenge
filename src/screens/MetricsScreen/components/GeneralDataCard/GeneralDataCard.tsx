@@ -11,7 +11,7 @@ export const GeneralDataCard = ({
     totalReward,
 }: Props) => {
     return (
-        <Container sx={{ textAlign: "center" }}>
+        <Container sx={{ textAlign: "center", flexDirection:"column", flexWrap: "wrap", display: "flex", justifyContent: "space-event", mb:"2rem" }}>
             <Box sx={{ mb: "2rem" }}>
                 <ViewAgendaIcon color='disabled' fontSize={"large"} />
                 <Typography variant="h4" fontWeight={"bold"}>{totalBlocksCount}</Typography>

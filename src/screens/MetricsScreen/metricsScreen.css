@@ -1,0 +1,14 @@
+.metrics-data-container {
+  display: flex;
+  flex-wrap: wrap-reverse;
+}
+.metrics-data-container .metrics-chart,
+.metrics-data-container .metrics-table {
+  width: 95%;
+}
+.metrics-data-container .metrics-chart {
+  height: 400px;
+}
+.metrics-data-container .main-metrics {
+  flex-grow: 1;
+}/*# sourceMappingURL=metricsScreen.css.map */

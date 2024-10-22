@@ -1,0 +1,17 @@
+.metrics-data-container {
+    display: flex;
+    flex-wrap: wrap-reverse;
+
+    .metrics-chart,
+    .metrics-table {
+        width: 95%;
+    }
+
+    .metrics-chart {
+        height: 400px;
+    }
+
+    .main-metrics {
+        flex-grow: 1;
+    }
+}
