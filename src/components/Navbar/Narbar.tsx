@@ -3,6 +3,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { logoutAuth } from '../../store/slices/authSlice/authSlice';
+import "./navbar.scss"
 
 export const Navbar = () => {
     const { isLogged, name } = useSelector((st: RootState) => st.auth)
@@ -13,17 +14,19 @@ export const Navbar = () => {
     }
 
     return (
-        <Box sx={{ backgroundColor: "red" }}>
-            <Container component="nav" >
-                <Typography variant="h4" component="h1">ChallengeApp</Typography>
+        <Box component="nav">
+            <Typography variant="h4" component="h1">BMetrics<b>App</b></Typography>
 
-                {isLogged &&
-                    <IconButton onClick={handleLogout} size="large" >
+            {isLogged &&
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <Typography variant="h5">
                         {name}
+                    </Typography>
+                    <IconButton onClick={handleLogout} size="large" color="error" >
                         <LogoutIcon height={20} color={'primary'} />
                     </IconButton>
-                }
-            </Container >
+                </Box>
+            }
         </Box>
     )
 }
