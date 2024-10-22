@@ -1,4 +1,5 @@
 @import url("./_buttons.scss");
+@import url("./_animations.scss");
 #root {
   display: flex;
   flex-direction: column;

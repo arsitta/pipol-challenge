@@ -10,10 +10,8 @@ interface Props<T> {
     errors: FormikErrors<T>;
     onChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     label?: string;
-    placeholder?: string;
     disabled?: boolean;
     disableFuture?: boolean;
-    size?: "small" | "medium"
     maxDate?: dayjs.Dayjs;
     minDate?: dayjs.Dayjs;
 }
@@ -25,9 +23,7 @@ export function DateInput<T>({
     touched,
     onChange,
     label,
-    placeholder,
     disabled,
-    size = "medium",
     disableFuture,
     maxDate,
     minDate,
@@ -61,10 +57,11 @@ export function DateInput<T>({
                 disableFuture={disableFuture}
                 maxDate={maxDate}
                 minDate={minDate}
+                
             />
             {errorText && <Typography
-                variant="caption" // Puedes usar "caption" o "body2" según lo que prefieras
-                color="error" // Aplica el color de error de Material-UI
+                variant="caption"
+                color="error" 
                 style={{ marginTop: '4px', marginBottom: '0px' }}
             >{errorText}</Typography>
             }

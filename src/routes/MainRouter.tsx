@@ -1,12 +1,14 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import { LoginScreen } from '../screens/LoginScreen/LoginScreen'
-import { APP_ROUTES } from './AppRoutes'
-import { PublicRouteGuard } from './guards/PublicRouteGuard'
-import { PrivateRouteGuard } from './guards/PrivateRouteGuard'
+import { Dashboard } from '../components/Dashboard/Dashboard'
 import { Footer } from '../components/Footer/Footer'
 import { Navbar } from '../components/Navbar/Narbar'
-import { Dashboard } from '../components/Dashboard/Dashboard'
+import { LoginScreen } from '../screens/LoginScreen/LoginScreen'
 import { MetricsScreen } from '../screens/MetricsScreen/MetricsScreen'
+import { SettingsScreen } from '../screens/SettingsScreen/SettingsScreen'
+import { APP_ROUTES } from './AppRoutes'
+import { PrivateRouteGuard } from './guards/PrivateRouteGuard'
+import { PublicRouteGuard } from './guards/PublicRouteGuard'
+import { SearchHistoryScreen } from '../screens/SearchHistoryScreen/SearchHistoryScreen'
 
 export const MainRouter = () => {
     return (<>
@@ -29,10 +31,18 @@ export const MainRouter = () => {
                         </PrivateRouteGuard>
                     } />
 
+                    <Route path={APP_ROUTES.HISTORY} element={
+                        <PrivateRouteGuard>
+                            <Dashboard>
+                                <SearchHistoryScreen />
+                            </Dashboard>
+                        </PrivateRouteGuard>
+                    } />
+
                     <Route path={APP_ROUTES.SETTINGS} element={
                         <PrivateRouteGuard>
                             <Dashboard>
-                                <div>settings</div>
+                                <SettingsScreen />
                             </Dashboard>
                         </PrivateRouteGuard>
                     } />

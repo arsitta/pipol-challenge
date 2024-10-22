@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import dayjs from "dayjs";
 
 export type BLOCK_DATE_DATA_TYPE = {
   reward: string,
@@ -15,6 +16,13 @@ export type ALL_REWARDS_BETWEEN_DATES_TYPES = {
       totalBlocksCount: number,
     }[]
   }
+}
+
+export type ALL_REWARDS_BETWEEN_DATES_VARIABLES_TYPES = {
+  after: dayjs.Dayjs | null;
+  before: dayjs.Dayjs | null;
+  offset: number;
+  limit: number;
 }
 
 export const ALL_REWARDS_BETWEEN_DATES = gql`

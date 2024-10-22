@@ -49,7 +49,7 @@ export const LoginScreen = () => {
     }
 
     return (
-        <Container className="screen-section" maxWidth="xs">
+        <Container className="screen-section fade-in" maxWidth="xs">
             <Paper elevation={3} sx={{ height: "fit-content" }}>
                 <Box
                     sx={{
