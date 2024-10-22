@@ -1,9 +1,10 @@
-import { Box, Container, IconButton, Typography } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout';
+import { Box, IconButton, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
 import { logoutAuth } from '../../store/slices/authSlice/authSlice';
-import "./navbar.scss"
+import { RootState } from '../../store/store';
+import "./navbar.scss";
+import { Tooltip } from '@mui/material';
 
 export const Navbar = () => {
     const { isLogged, name } = useSelector((st: RootState) => st.auth)
@@ -19,12 +20,15 @@ export const Navbar = () => {
 
             {isLogged &&
                 <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Typography variant="h5">
-                        {name}
+                    <Typography variant="h5" sx={{ mr: "0.5rem" }}>
+                        Hola, <b>{name}</b>!
                     </Typography>
-                    <IconButton onClick={handleLogout} size="large" color="error" >
-                        <LogoutIcon height={20} color={'primary'} />
-                    </IconButton>
+
+                    <Tooltip title="Cerrar sesion" arrow>
+                        <IconButton onClick={handleLogout} size="large" color="error">
+                            <LogoutIcon height={20} />
+                        </IconButton>
+                    </Tooltip>
                 </Box>
             }
         </Box>

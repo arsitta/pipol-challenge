@@ -1,0 +1,11 @@
+.dashboard-container {
+  display: flex;
+  height: 100%;
+  flex-grow: 1;
+}
+.dashboard-container aside {
+  border-right: 1px solid rgba(201, 201, 201, 0.418);
+}
+.dashboard-container section {
+  padding: 1rem 2rem;
+}/*# sourceMappingURL=dashboard.css.map */

@@ -13,7 +13,7 @@ export const PublicRouteGuard = ({ children }: Props) => {
 
     return (
         isLogged ?
-            <Navigate to={APP_ROUTES.HOME} />
+            <Navigate to={APP_ROUTES.METRICS} />
             :
             children
     )
