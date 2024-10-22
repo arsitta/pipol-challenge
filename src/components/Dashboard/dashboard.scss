@@ -5,9 +5,13 @@
 
     aside {
         border-right: 1px solid rgba(201, 201, 201, 0.418);
+        width: 15%;
+        min-width: fit-content;
+        padding-top: 1rem;
     }
 
     section {
         padding: 1rem 2rem;
+        width: 100%;
     }
 }
